@@ -22,13 +22,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 // ✅ CORS setup (allow only specific frontends)
+const allowedOrigins = [
+  "https://pawfect-match.vercel.app",
+  "https://pawfect-match-git-master-damusloys-projects.vercel.app"
+];
+
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = [
-      "https://pawfect-match-59n7fz5di-damusloys-projects.vercel.app",
-      "https://pawfect-match-git-master-damusloys-projects.vercel.app",
-      "http://localhost:3000"
-    ];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
