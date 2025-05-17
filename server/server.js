@@ -17,22 +17,22 @@ const app = express();
 // ✅ Security headers
 app.use(helmet());
 
-// ✅ JSON & cookie parsing
+// ✅ JSON parsing and cookies
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ Strict CORS: Allow Vercel only
-const allowedOrigins = [
-  "https://pawfect-match-one.vercel.app",
-  "https://pawfect-match-git-master-damusloys-projects.vercel.app"
-];
-
+// ✅ CORS setup (allow only specific frontends)
 app.use(cors({
   origin: function (origin, callback) {
+    const allowedOrigins = [
+      "https://pawfect-match-59n7fz5di-damusloys-projects.vercel.app",
+      "https://pawfect-match-git-master-damusloys-projects.vercel.app",
+      "http://localhost:3000"
+    ];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("❌ Not allowed by CORS"));
+      callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
@@ -42,7 +42,7 @@ app.use(cors({
 
 // ✅ Serve uploaded images
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
-  setHeaders: (res) => {
+  setHeaders: (res, path) => {
     res.set("Cross-Origin-Resource-Policy", "cross-origin");
   }
 }));
@@ -52,7 +52,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
-// ✅ API routes
+// ✅ API Routes
 app.use("/api/users", userRoutes);
 app.use("/api/pets", petRoutes);
 app.use("/api/adoptions", adoptionRoutes);
