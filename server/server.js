@@ -8,42 +8,60 @@ const path = require("path");
 
 const userRoutes = require("./routes/userRoutes");
 const petRoutes = require("./routes/petRoutes");
-const adoptionRoutes = require("./routes/adoptionRoutes"); 
+const adoptionRoutes = require("./routes/adoptionRoutes");
+
 dotenv.config();
 
 const app = express();
 
-// ✅ Middleware
+// ✅ Security headers
 app.use(helmet());
+
+// ✅ JSON parsing
 app.use(express.json());
 app.use(cookieParser());
+
+// ✅ CORS setup (allow Vercel + local dev for testing)
+const allowedOrigins = [
+  "https://pawfect-match-one.vercel.app",
+  "http://localhost:3000"
+];
+
 app.use(cors({
-  origin: ["https://pawfect-match-one.vercel.app"],
-  credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// ✅ Serve static files (image uploads)
+// ✅ Serve uploaded images
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
   setHeaders: (res, path) => {
-    res.set('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.set("Cross-Origin-Resource-Policy", "cross-origin");
   }
 }));
 
-// ✅ MongoDB Connection
+// ✅ Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.error("MongoDB connection error:", err));
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch(err => console.error("❌ MongoDB connection error:", err));
 
-// ✅ API Routes
+// ✅ API routes
 app.use("/api/users", userRoutes);
 app.use("/api/pets", petRoutes);
-app.use("/api/adoptions", adoptionRoutes); // ✅ NEW
+app.use("/api/adoptions", adoptionRoutes);
 
-// ✅ Default route
-app.get("/", (req, res) => res.send("Pet Adoption API Running!"));
+// ✅ Root route
+app.get("/", (req, res) => res.send("🐾 Pawfect Match API Running!"));
 
-// ✅ Start server
+// ✅ Start server (Render provides the port)
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
