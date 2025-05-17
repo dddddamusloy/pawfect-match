@@ -17,15 +17,14 @@ const app = express();
 // ✅ Security headers
 app.use(helmet());
 
-// ✅ JSON parsing
+// ✅ JSON & cookie parsing
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ CORS setup (allow Vercel + local dev for testing)
+// ✅ Strict CORS: Allow Vercel only
 const allowedOrigins = [
   "https://pawfect-match-one.vercel.app",
-  "https://pawfect-match-git-master-damusloys-projects.vercel.app",
-  "http://localhost:3000"
+  "https://pawfect-match-git-master-damusloys-projects.vercel.app"
 ];
 
 app.use(cors({
@@ -33,7 +32,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error("❌ Not allowed by CORS"));
     }
   },
   credentials: true,
@@ -43,7 +42,7 @@ app.use(cors({
 
 // ✅ Serve uploaded images
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
-  setHeaders: (res, path) => {
+  setHeaders: (res) => {
     res.set("Cross-Origin-Resource-Policy", "cross-origin");
   }
 }));
@@ -61,7 +60,7 @@ app.use("/api/adoptions", adoptionRoutes);
 // ✅ Root route
 app.get("/", (req, res) => res.send("🐾 Pawfect Match API Running!"));
 
-// ✅ Start server (Render provides the port)
+// ✅ Start server (Render provides PORT)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Server running on port ${PORT}`);
