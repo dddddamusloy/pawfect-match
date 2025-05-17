@@ -36,7 +36,7 @@ function AddPet() {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/pets', formData, {
+      await axios.post('https://pawfect-backend.onrender.com/api/pets', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true
       });

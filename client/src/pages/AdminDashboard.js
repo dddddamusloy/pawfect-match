@@ -9,7 +9,7 @@ function AdminDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/users/me', { withCredentials: true })
+    axios.get('https://pawfect-backend.onrender.com/api/users/me', { withCredentials: true })
       .then(res => {
         if (res.data.role !== 'admin') {
           navigate('/home');
@@ -23,11 +23,11 @@ function AdminDashboard() {
 
   const fetchPets = async () => {
     try {
-      const petRes = await axios.get('http://localhost:5000/api/pets/all', {
+      const petRes = await axios.get('https://pawfect-backend.onrender.com/api/pets/all', {
         withCredentials: true
       });
 
-      const requestRes = await axios.get('http://localhost:5000/api/adoptions/admin', {
+      const requestRes = await axios.get('https://pawfect-backend.onrender.com/api/adoptions/admin', {
         withCredentials: true
       });
 
@@ -48,7 +48,7 @@ function AdminDashboard() {
 
   const fetchRequests = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/adoptions/admin', {
+      const res = await axios.get('https://pawfect-backend.onrender.com/api/adoptions/admin', {
         withCredentials: true
       });
       setRequests(res.data);
@@ -62,7 +62,7 @@ function AdminDashboard() {
     if (!confirm) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/pets/${id}`, {
+      await axios.delete(`https://pawfect-backend.onrender.com/api/pets/${id}`, {
         withCredentials: true
       });
       fetchPets();
@@ -74,7 +74,7 @@ function AdminDashboard() {
 
   const handleStatusChange = async (requestId, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/adoptions/${requestId}/status`, { status }, {
+      await axios.put(`https://pawfect-backend.onrender.com/api/adoptions/${requestId}/status`, { status }, {
         withCredentials: true
       });
       fetchRequests();
@@ -86,7 +86,7 @@ function AdminDashboard() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/users/logout', {}, {
+      await axios.post('https://pawfect-backend.onrender.com/api/users/logout', {}, {
         withCredentials: true
       });
       navigate('/');
@@ -100,7 +100,7 @@ function AdminDashboard() {
       <tr key={pet._id}>
         <td>
           <img
-            src={pet.image ? `http://localhost:5000${pet.image}` : "https://via.placeholder.com/80"}
+            src={pet.image ? `https://pawfect-backend.onrender.com${pet.image}` : "https://via.placeholder.com/80"}
             alt={pet.name}
             style={{ width: '80px', borderRadius: '6px' }}
           />

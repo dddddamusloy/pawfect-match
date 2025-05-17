@@ -19,7 +19,7 @@ function EditPet() {
 
   // ✅ Fetch pet data
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/pets/${id}`)
+    axios.get(`https://pawfect-backend.onrender.com/api/pets/${id}`)
       .then(res => setForm(res.data))
       .catch(err => {
         console.error(err);
@@ -48,7 +48,7 @@ function EditPet() {
     }
 
     try {
-      await axios.put(`http://localhost:5000/api/pets/${id}`, formData, {
+      await axios.put(`https://pawfect-backend.onrender.com/api/pets/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true
       });

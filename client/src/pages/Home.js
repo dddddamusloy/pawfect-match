@@ -15,7 +15,7 @@ function Home() {
 
   const fetchPets = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/pets');
+      const res = await axios.get('https://pawfect-backend.onrender.com/api/pets');
       setPets(res.data);
     } catch (err) {
       console.error('Failed to load pets:', err);
@@ -24,7 +24,7 @@ function Home() {
 
   const fetchUserRequests = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/adoptions/my-requests', {
+      const res = await axios.get('https://pawfect-backend.onrender.com/api/adoptions/my-requests', {
         withCredentials: true
       });
       setRequests(res.data);
@@ -35,7 +35,7 @@ function Home() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/users/logout', {}, {
+      await axios.post('https://pawfect-backend.onrender.com/api/users/logout', {}, {
         withCredentials: true
       });
       navigate('/');
@@ -48,7 +48,7 @@ function Home() {
     const message = window.prompt("Enter a short message for your request (optional):") || "";
 
     try {
-      await axios.post('http://localhost:5000/api/adoptions/request', {
+      await axios.post('https://pawfect-backend.onrender.com/api/adoptions/request', {
         petId,
         message
       }, { withCredentials: true });
@@ -64,7 +64,7 @@ function Home() {
     if (!confirm) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/adoptions/${requestId}`, {
+      await axios.delete(`https://pawfect-backend.onrender.com/api/adoptions/${requestId}`, {
         withCredentials: true
       });
       fetchUserRequests();
@@ -95,7 +95,7 @@ function Home() {
           return (
             <div key={pet._id} style={styles.card}>
               <img
-                src={pet.image ? `http://localhost:5000${pet.image}` : "https://via.placeholder.com/250"}
+                src={pet.image ? `https://pawfect-backend.onrender.com${pet.image}` : "https://via.placeholder.com/250"}
                 alt={pet.name}
                 style={styles.image}
               />
