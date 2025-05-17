@@ -24,6 +24,7 @@ app.use(cookieParser());
 // ✅ CORS setup (allow Vercel + local dev for testing)
 const allowedOrigins = [
   "https://pawfect-match-one.vercel.app",
+  "https://pawfect-match-git-master-damusloys-projects.vercel.app",
   "http://localhost:3000"
 ];
 
