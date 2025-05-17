@@ -23,7 +23,7 @@ function Login() {
     try {
       // Login
       const res = await axios.post('https://pawfect-backend.onrender.com/api/users/login', formData, {
-        withCredentials: true,
+        withCredentials: true
       });
       setMessage(res.data.message);
 
